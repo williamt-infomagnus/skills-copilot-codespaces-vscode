@@ -1,14 +1,24 @@
-// Create server
-const express = require('express');
-const app = express();
-const port = 3000;
+// Create web server
+// Create a route to handle GET requests to /comments
+// Read comments.json file
+// Send the comments to the client as a JSON response
+// Start the server on port 3000
+// Use the comments.json file to test the route
 
-// Import routes
-const comments = require('./routes/comments');
+var express = require("express");
+var fs = require("fs");
+var app = express();
 
-// Use routes
-app.use('/comments', comments);
+app.get("/comments", function (req, res) {
+  fs.readFile("./comments.json", "utf8", function (err, data) {
+    if (err) {
+      res.status(500).send("An error occurred: " + err);
+      return;
+    }
+    res.json(JSON.parse(data));
+  });
+});
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(3000, function () {
+  console.log("Server is listening on port 3000");
 });
